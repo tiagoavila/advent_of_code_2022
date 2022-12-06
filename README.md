@@ -2,17 +2,12 @@
 
 Solutions for the Advent of Code Challenge 2022. Read more [here](https://adventofcode.com/2022)
 
-## Installation
+## How to run
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent_of_code_2022` to your list of dependencies in `mix.exs`:
+The code is built to run with ExUnit, so to run it just type the following command under the project folder
 
 ```elixir
-def deps do
-  [
-    {:advent_of_code_2022, "~> 0.1.0"}
-  ]
-end
+mix test
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)

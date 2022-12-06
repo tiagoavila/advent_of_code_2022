@@ -10,7 +10,7 @@ defmodule DayOneTest do
   test "get result for challenge input part 1" do
         File.read!("./inputs/day_one/challenge_input.txt")
         |> DayOne.get_most_calories()
-        |> IO.inspect
+        |> IO.inspect(label: "result for challenge input part 1 is")
   end
 
   test "for test input the most calories of top 3 elves is 45000" do
@@ -21,6 +21,6 @@ defmodule DayOneTest do
   test "get result for challenge input part 2" do
     File.read!("./inputs/day_one/challenge_input.txt")
     |> DayOne.get_calories_of_top_3_elves()
-    |> IO.inspect
+    |> IO.inspect(label: "result for challenge input part 2 is")
   end
 end
