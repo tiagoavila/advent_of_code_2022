@@ -1,4 +1,4 @@
-# DayOne
+# Advent of Code Challenge 2022
 
 Solutions for the Advent of Code Challenge 2022. Read more [here](https://adventofcode.com/2022)
 
