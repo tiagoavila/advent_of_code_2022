@@ -63,7 +63,7 @@ defmodule DayOne do
     input
     |> String.split("\n\n", trim: true)
     |> Enum.map(&get_calories_by_elf/1)
-    |> Enum.sort_by(&(&1), :desc)
+    |> Enum.sort(:desc)
     |> Enum.take(3)
     |> Enum.sum()
   end
