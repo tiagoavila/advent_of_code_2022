@@ -47,11 +47,8 @@ defmodule DayFive do
   """
   def parse_rearrange_instructions_to_tuple_list(rearrange_instructions) do
     rearrange_instructions
-    |> String.replace("move ", "")
-    |> String.replace(" from ", " ")
-    |> String.replace(" to ", " ")
     |> String.split("\n", trim: true)
-    |> Enum.map(&(String.split(&1, " ", trim: true)) |> List.to_tuple())
+    |> Enum.map(&(Regex.scan(~r/[0-9]/, &1) |> Enum.concat() |> List.to_tuple()))
     |> IO.inspect()
   end
 end
