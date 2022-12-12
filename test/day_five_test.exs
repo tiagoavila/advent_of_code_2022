@@ -4,7 +4,6 @@ defmodule DayFiveTest do
 
   test "Day 05 - for test input crates on top are CMZ" do
     assert File.read!("./inputs/day_five/test_input.txt")
-     |> IO.inspect
      |> DayFive.get_crates_on_top() == "CMZ"
   end
 
