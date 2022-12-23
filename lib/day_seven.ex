@@ -19,8 +19,12 @@ defmodule DaySeven do
   end
 
   defp process_line("$ cd " <> dir_name, %DaySeven{current_dir: new_parent_dir} = acc) do
-    updated_dirs = Map.put_new(acc.dirs, dir_name, 0)
-    %{acc | current_dir: dir_name, parent_dirs: [new_parent_dir | acc.parent_dirs], dirs: updated_dirs}
+    updated_parent_dirs = [new_parent_dir | acc.parent_dirs]
+    full_dir_name = [dir_name] ++ updated_parent_dirs
+    |> Enum.join("/")
+
+    updated_dirs = Map.put(acc.dirs, full_dir_name, 0)
+    %{acc | current_dir: full_dir_name, parent_dirs: updated_parent_dirs, dirs: updated_dirs}
   end
 
   defp process_line(file_line, acc) do
