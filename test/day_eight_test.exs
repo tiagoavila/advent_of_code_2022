@@ -13,11 +13,11 @@ defmodule DayEightTest do
     |> IO.inspect(label: "Day 08 - Part 01: result for challenge input part 1 is")
   end
 
-#  test "Day 08 Part 2 - for test input total size of that directory to be deleted is" do
-#    assert File.read!("./inputs/day_eight/test_input.txt")
-#           |> DayEight.find_size_of_smallest_directory_to_delete() == 24_933_642
-#  end
-#
+  test "Day 08 Part 2 - for test input highest scenic score is 8" do
+    assert File.read!("./inputs/day_eight/test_input.txt")
+           |> DayEightPart2.get_highest_scenic_score() == 8
+  end
+
 #  test "Day 08 part 2 - result for challenge input part 2" do
 #    File.read!("./inputs/day_eight/challenge_input.txt")
 #    |> DayEight.find_size_of_smallest_directory_to_delete()
