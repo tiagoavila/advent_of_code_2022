@@ -4,7 +4,6 @@ defmodule DayEight do
       input
       |> String.split("\n")
       |> Enum.count()
-      |> IO.inspect()
 
     grid =
       input
