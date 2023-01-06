@@ -25,3 +25,5 @@ advent_of_code_2022-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 .idea
+.vscode
+mix.lock
