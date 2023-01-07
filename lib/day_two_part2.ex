@@ -28,7 +28,7 @@ defmodule DayTwoPartTwo do
     play
     |> String.split(" ", trim: true)
     |> List.to_tuple()
-    |> then(fn {opponent_play, instruction} -> { @rock_paper_scissors_map[opponent_play], @instructions_map[instruction] } end)
+    |> then(fn {opponent_play, instruction} -> {@rock_paper_scissors_map[opponent_play], @instructions_map[instruction] } end)
   end
 
   defp calculate_score({opponent_play, :draw}, acc) do
