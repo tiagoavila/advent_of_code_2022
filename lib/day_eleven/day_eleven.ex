@@ -1,10 +1,13 @@
 defmodule DayEleven do
   alias DayEleven.MonkeyServer
 
+  # DayEleven.run_test()
+  # GenServer.call(:"monkey-3", {:catch, "09"})
+
   defmodule MonkeyData do
     defstruct [
       :monkey,
-      :start_items,
+      :items,
       :operation_function,
       :test,
       :if_true,
@@ -19,19 +22,26 @@ defmodule DayEleven do
   end
 
   def get_level_of_monkey_business(input) do
-    input
-    |> String.split("\n\n", trim: true)
-    |> Enum.map(fn monkey_row ->
-      monkey_row
-      |> String.split("\n", trim: true)
-      |> Enum.map(&String.trim_leading(&1))
-      |> create_monkey_data()
-    end)
-    |> Map.new(fn %MonkeyData{monkey: monkey} = monkey_data ->
-      server_name = String.to_atom("monkey-#{monkey}")
-      {:ok, pid} = GenServer.start_link(MonkeyServer, monkey_data, name: server_name)
-      {server_name, pid}
-    end)
+    monkeys =
+      input
+      |> String.split("\n\n", trim: true)
+      |> Enum.map(&parse_monkey_row/1)
+      |> Enum.map(fn %MonkeyData{monkey: monkey} = monkey_data ->
+        {:ok, _pid} = GenServer.start_link(MonkeyServer, monkey_data, name: monkey)
+        monkey
+      end)
+
+    monkeys
+    |> Stream.cycle()
+    |> Enum.take(20)
+    |> Enum.each(fn args -> args end)
+  end
+
+  defp parse_monkey_row(monkey_row) do
+    monkey_row
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.trim_leading(&1))
+    |> create_monkey_data()
   end
 
   defp create_monkey_data([
@@ -42,7 +52,7 @@ defmodule DayEleven do
          "If true: throw to monkey " <> true_monkey,
          "If false: throw to monkey " <> false_monkey
        ]) do
-    start_items = String.split(items, ", ", trim: true)
+    start_items = String.split(items, ", ", trim: true) |> Enum.map(&String.to_integer/1)
 
     operation_function =
       case {op, operand} do
@@ -52,12 +62,12 @@ defmodule DayEleven do
       end
 
     %MonkeyData{
-      monkey: monkey,
-      start_items: start_items,
+      monkey: String.to_atom("monkey-#{monkey}"),
+      items: start_items,
       operation_function: operation_function,
       test: String.to_integer(test),
-      if_true: true_monkey,
-      if_false: false_monkey,
+      if_true: String.to_atom("monkey-#{true_monkey}"),
+      if_false: String.to_atom("monkey-#{false_monkey}"),
       inspect_count: 0
     }
   end
