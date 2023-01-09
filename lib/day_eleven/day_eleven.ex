@@ -33,8 +33,14 @@ defmodule DayEleven do
 
     monkeys
     |> Stream.cycle()
-    |> Enum.take(20)
-    |> Enum.each(fn args -> args end)
+    |> Enum.take(20 * length(monkeys))
+    |> Enum.each(fn monkey -> MonkeyServer.do_monkey_turn(monkey) end)
+
+    monkeys
+    |> Enum.map(&MonkeyServer.report_inspect_count/1)
+    |> Enum.sort(:desc)
+    |> Enum.take(2)
+    |> Enum.reduce(&Kernel.*/2)
   end
 
   defp parse_monkey_row(monkey_row) do
@@ -63,7 +69,7 @@ defmodule DayEleven do
 
     %MonkeyData{
       monkey: String.to_atom("monkey-#{monkey}"),
-      items: start_items,
+      items: Enum.reverse(start_items),
       operation_function: operation_function,
       test: String.to_integer(test),
       if_true: String.to_atom("monkey-#{true_monkey}"),

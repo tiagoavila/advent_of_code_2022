@@ -8,6 +8,8 @@ defmodule DayEleven.MonkeyServer do
 
   def do_monkey_turn(monkey), do: GenServer.call(monkey, {:inspect_items})
 
+  def report_inspect_count(monkey), do: GenServer.call(monkey, {:report_inspect_count})
+
   # ===================================================================================================
 
 
@@ -19,24 +21,45 @@ defmodule DayEleven.MonkeyServer do
   end
 
   def handle_cast({:catch, item}, monkey_data) do
-    IO.puts("From #{monkey_data.monkey}: Thanks for sending me the item #{item}")
+    # IO.puts("From #{monkey_data.monkey}: Thanks for sending me the item #{item}")
 
     updated_monkey_state = %DayEleven.MonkeyData{monkey_data | items: [item | monkey_data.items]}
     {:noreply, updated_monkey_state}
   end
 
   def handle_call({:inspect_items}, _from, monkey_data) do
-    IO.puts("From #{monkey_data.monkey}: All right, I'll inspect my items")
+    # IO.puts("From #{monkey_data.monkey}: All right, I'll inspect my items")
 
+    updated_monkey_data = inspect_items_and_throw(monkey_data)
 
+    {:reply, updated_monkey_data, updated_monkey_data}
+  end
 
-    {:reply, monkey_data, monkey_data}
+  def handle_call({:report_inspect_count}, _from, monkey_data) do
+    # IO.puts("From #{monkey_data.monkey}: All right, I'll report my count of items I inspected")
+
+    {:reply, monkey_data.inspect_count, monkey_data}
   end
 
   # ===================================================================================================
 
+  # Business Logic
+
   defp inspect_items_and_throw(monkey_data) do
     monkey_data.items
-    |> Enum.reduce(0, fn args -> 1 end)
+    |> Enum.reverse()
+    |> Enum.each(fn item ->
+      worry_level = monkey_data.operation_function.(item) |> div(3)
+
+      monkey_to_throw = if rem(worry_level, monkey_data.test) == 0 do
+        monkey_data.if_true
+      else
+        monkey_data.if_false
+      end
+
+      throw_item_to_monkey(monkey_to_throw, worry_level)
+    end)
+
+    %DayEleven.MonkeyData{monkey_data | inspect_count: monkey_data.inspect_count + Enum.count(monkey_data.items), items: []}
   end
 end

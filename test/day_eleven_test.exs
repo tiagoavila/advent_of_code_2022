@@ -5,14 +5,14 @@ defmodule DayElevenTest do
   test "Day 11 - for test input the level of monkey business after
     20 rounds of stuff-slinging simian shenanigans is 10605" do
     assert File.read!("./inputs/day_eleven/test_input.txt")
-           |> DayEleven.get_level_of_monkey_business() == 10605
+           |> DayEleven.get_level_of_monkey_business() == 10_605
   end
 
-  # test "Day 11 - get result for challenge input part 1" do
-  #   File.read!("./inputs/day_eleven/challenge_input.txt")
-  #   |> DayEleven.get_signal_strengths_sum()
-  #   |> IO.inspect(label: "Day 11 - Part 01: result for challenge input part 1 is")
-  # end
+  test "Day 11 - get result for challenge input part 1" do
+    File.read!("./inputs/day_eleven/challenge_input.txt")
+    |> DayEleven.get_level_of_monkey_business()
+    |> IO.inspect(label: "Day 11 - Part 01: result for challenge input part 1 is")
+  end
 
   #  test "Day 11 Part 2 - for test input the number of positions the tail of the rope visits at least once is 1" do
   #    assert File.read!("./inputs/day_eleven/test_input.txt")
