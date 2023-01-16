@@ -12,7 +12,6 @@ defmodule DayEleven.MonkeyServer do
 
   # ===================================================================================================
 
-
   # Server Callbacks
 
   @spec init(any) :: {:ok, any}
@@ -49,17 +48,25 @@ defmodule DayEleven.MonkeyServer do
     monkey_data.items
     |> Enum.reverse()
     |> Enum.each(fn item ->
-      worry_level = monkey_data.operation_function.(item) |> div(3)
+      worry_level =
+        if monkey_data.decrease_worry_level == true,
+          do: monkey_data.operation_function.(item) |> div(3),
+          else: monkey_data.operation_function.(item)
 
-      monkey_to_throw = if rem(worry_level, monkey_data.test) == 0 do
-        monkey_data.if_true
-      else
-        monkey_data.if_false
-      end
+      monkey_to_throw =
+        if rem(worry_level, monkey_data.test) == 0 do
+          monkey_data.if_true
+        else
+          monkey_data.if_false
+        end
 
       throw_item_to_monkey(monkey_to_throw, worry_level)
     end)
 
-    %DayEleven.MonkeyData{monkey_data | inspect_count: monkey_data.inspect_count + Enum.count(monkey_data.items), items: []}
+    %DayEleven.MonkeyData{
+      monkey_data
+      | inspect_count: monkey_data.inspect_count + Enum.count(monkey_data.items),
+        items: []
+    }
   end
 end

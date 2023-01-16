@@ -12,7 +12,8 @@ defmodule DayEleven do
       :test,
       :if_true,
       :if_false,
-      :inspect_count
+      :inspect_count,
+      :decrease_worry_level
     ]
   end
 
@@ -21,11 +22,11 @@ defmodule DayEleven do
     |> DayEleven.get_level_of_monkey_business()
   end
 
-  def get_level_of_monkey_business(input) do
+  def get_level_of_monkey_business(input, rounds \\ 20, decrease_worry_level \\ true) do
     monkeys =
       input
       |> String.split("\n\n", trim: true)
-      |> Enum.map(&parse_monkey_row/1)
+      |> Enum.map(&(parse_monkey_row(&1, decrease_worry_level)))
       |> Enum.map(fn %MonkeyData{monkey: monkey} = monkey_data ->
         {:ok, _pid} = GenServer.start_link(MonkeyServer, monkey_data, name: monkey)
         monkey
@@ -33,7 +34,7 @@ defmodule DayEleven do
 
     monkeys
     |> Stream.cycle()
-    |> Enum.take(20 * length(monkeys))
+    |> Enum.take(rounds * length(monkeys))
     |> Enum.each(fn monkey -> MonkeyServer.do_monkey_turn(monkey) end)
 
     monkeys
@@ -43,11 +44,11 @@ defmodule DayEleven do
     |> Enum.reduce(&Kernel.*/2)
   end
 
-  defp parse_monkey_row(monkey_row) do
+  defp parse_monkey_row(monkey_row, decrease_worry_level) do
     monkey_row
     |> String.split("\n", trim: true)
     |> Enum.map(&String.trim_leading(&1))
-    |> create_monkey_data()
+    |> create_monkey_data(decrease_worry_level)
   end
 
   defp create_monkey_data([
@@ -57,7 +58,7 @@ defmodule DayEleven do
          "Test: divisible by " <> test,
          "If true: throw to monkey " <> true_monkey,
          "If false: throw to monkey " <> false_monkey
-       ]) do
+       ], decrease_worry_level) do
     start_items = String.split(items, ", ", trim: true) |> Enum.map(&String.to_integer/1)
 
     operation_function =
@@ -74,7 +75,8 @@ defmodule DayEleven do
       test: String.to_integer(test),
       if_true: String.to_atom("monkey-#{true_monkey}"),
       if_false: String.to_atom("monkey-#{false_monkey}"),
-      inspect_count: 0
+      inspect_count: 0,
+      decrease_worry_level: decrease_worry_level
     }
   end
 end
