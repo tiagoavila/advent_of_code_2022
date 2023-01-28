@@ -4,7 +4,7 @@ defmodule DaySevenTest do
 
   test "Day 07 - for test input the sum of the total sizes of the directories is 95437" do
     assert File.read!("./inputs/day_seven/test_input.txt")
-           |> DaySeven.find_sum_of_small_folders() == 95437
+           |> DaySeven.find_sum_of_small_folders() == 95_437
   end
 
   test "Day 07 - get result for challenge input part 1" do

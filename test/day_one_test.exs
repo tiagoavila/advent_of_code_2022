@@ -4,7 +4,7 @@ defmodule DayOneTest do
 
   test "Day 01 - for test input the most calories is 24000" do
     assert File.read!("./inputs/day_one/test_input.txt")
-    |> DayOne.get_most_calories() == 24000
+    |> DayOne.get_most_calories() == 24_000
   end
 
   test "Day 01 - get result for challenge input part 1" do
@@ -15,7 +15,7 @@ defmodule DayOneTest do
 
   test "Day 01 - for test input the most calories of top 3 elves is 45000" do
     assert File.read!("./inputs/day_one/test_input.txt")
-    |> DayOne.get_calories_of_top_3_elves() == 45000
+    |> DayOne.get_calories_of_top_3_elves() == 45_000
   end
 
   test "Day 01 - et result for challenge input part 2" do

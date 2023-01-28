@@ -4,7 +4,7 @@ defmodule DayTenTest do
 
   test "Day 10 - for test input the sum of these six signal strengths is 13140" do
     assert File.read!("./inputs/day_ten/test_input.txt")
-           |> DayTen.get_signal_strengths_sum() == 13140
+           |> DayTen.get_signal_strengths_sum() == 13_140
   end
 
   test "Day 10 - get result for challenge input part 1" do
